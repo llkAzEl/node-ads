@@ -1,15 +1,16 @@
 const db = require('./db');
 
-async function criarLab(nome, capacidade, computodores) {
+async function alunos(nome, cpf, logradouro) {
 
     try {
         const con = await db.conectarMysql();
-        let sql = `INSERT INTO pmc.laboratorios ( nome, capacidade, computadores) VALUES ('${nome}', ${capacidade}, ${computodores})`
+        let sql = `INSERT INTO alunos ( nome , cpf, logradouro) VALUES ('${nome}', ${cpf}, ${logradouro})`
         await con.execute(sql);
         con.destroy();
         console.log("inseriu");
         return true;        
     } catch (error) {
+        console.log(error);
         con.destroy();
         console.log("error");
         return false;
@@ -17,14 +18,15 @@ async function criarLab(nome, capacidade, computodores) {
 }
 
 
-async function updateLab(id, nome, capacidade, computodores) {
+async function updateLab(id, nome, cpf, logradouro) {
 
     try {
         const con = await db.conectarMysql();
-        let sql = `UPDATE pmc.laboratorios set nome='${nome}', capacidade=${capacidade}, computadores=${computodores} where id=${id}`
+        let sql = `UPDATE test.alunos set nome='${nome}', turno=${cpf}, turno=${logradouro} where id=${id}`
         await con.execute(sql);
         con.destroy();
         console.log("atualizou");
+        
         return true;        
     } catch (error) {
         console.log(error)
@@ -38,7 +40,7 @@ async function consultarLab(){
 
     try {
         const con = await db.conectarMysql();
-        const consulta = 'SELECT * FROM laboratorios l';
+        const consulta = 'SELECT * FROM alunos';
         const resultado = await con.query(consulta);
         const listaLabs = resultado[0];
         console.log(listaLabs)
@@ -57,7 +59,7 @@ async function getLab(id){
 
     try {
         const con = await db.conectarMysql();
-        const consulta = `SELECT * FROM laboratorios l where id = ${id}`;
+        const consulta = `SELECT * FROM alunos l where id = ${id}`;
         const resultado = await con.query(consulta);
         const lab = resultado[0][0];
         console.log(lab)
@@ -74,7 +76,7 @@ async function apagarLab(id){
 
     try {
         const con = await db.conectarMysql();
-        const consulta = `delete from laboratorios where id = ${id}`
+        const consulta = `delete from alunos where id = ${id}`
         await con.execute(consulta);
         return true;
         
@@ -86,4 +88,4 @@ async function apagarLab(id){
 }
 
 
-module.exports = { criarLab, consultarLab, apagarLab, getLab, updateLab };
+module.exports = { alunos, consultarLab, apagarLab, getLab, updateLab };
